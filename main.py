@@ -43,4 +43,4 @@ for user in users:
 
     res = requests.post('https://nco.zjgsu.edu.cn/', data=data, headers=header)
     print(datetime.datetime.now().strftime('%Y-%m-%d'), '报送情况：',
-          re.search('当天已报送!', str(res.content, encoding='utf-8')) is not None)
+          re.search('报送成功', str(res.content, encoding='utf-8')) is not None)
