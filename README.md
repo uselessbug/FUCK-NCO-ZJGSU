@@ -13,7 +13,7 @@
 将代码复制至目标文件夹下
 
 ```shell script
-cd ~
+cd /root/
 git clone https://github.com/Hukeqing/FUCK-NCO-ZJGSU.git
 cd FUCK-NCO-ZJGSU
 pip install -r requirements.txt
@@ -28,7 +28,7 @@ crontab -e
 
 添加下面的内容
 ```shell script
-5 0 * * * python3 ~/FUCK-NCO-ZJGSU/main.py >> ~/FUCK-NCO-ZJGSU/out.txt
+5 0 * * * /usr/bin/python3 /root/FUCK-NCO-ZJGSU/main.py >> /root/FUCK-NCO-ZJGSU/out.txt
 ```
 
 然后保存即可
