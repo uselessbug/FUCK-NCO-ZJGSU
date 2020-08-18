@@ -17,6 +17,7 @@ cd /root/
 git clone https://github.com/Hukeqing/FUCK-NCO-ZJGSU.git
 cd FUCK-NCO-ZJGSU
 pip install -r requirements.txt
+chmod +x start.sh
 ```
 
 **然后修改 userExample.json 文件，并将文件重命名为 user.json**
@@ -28,7 +29,7 @@ crontab -e
 
 添加下面的内容
 ```shell script
-5 0 * * * /usr/bin/python3 /root/FUCK-NCO-ZJGSU/main.py >> /root/FUCK-NCO-ZJGSU/out.txt
+5 0 * * * /root/nco/start.sh
 ```
 
 然后保存即可
