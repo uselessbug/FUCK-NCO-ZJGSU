@@ -29,7 +29,7 @@ crontab -e
 
 添加下面的内容
 ```shell script
-5 0 * * * /root/nco/start.sh
+5 0 * * * /root/FUCK-NCO-ZJGSU/start.sh
 ```
 
 然后保存即可
