@@ -19,7 +19,7 @@ cd FUCK-NCO-ZJGSU
 pip install -r requirements.txt
 chmod +x start.sh
 ```
-
+**请注意，脚本使用的是 python3，如果下载包时使用了 python2 则会出现意料之外的情况**
 **然后修改 userExample.json 文件，并将文件重命名为 user.json**
 
 然后为服务器添加定时任务
