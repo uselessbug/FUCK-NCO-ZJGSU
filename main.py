@@ -31,6 +31,7 @@ with open('user.json', encoding='utf-8') as f:
 for user in users:
     ui = uuid.uuid1()
     data['uuid'] = str(ui)
+    data['currentResd'] = user['home']
     header = {'User-Agent': user_agent}
     res = requests.post('https://nco.zjgsu.edu.cn/login', data=user, headers=header)
     cookieValue = ''
