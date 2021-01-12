@@ -3,45 +3,36 @@ import uuid
 import re
 import requests
 import datetime
+import time
 
-user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
-
-data = {
-    'currentResd': '',
-    'fromHbToZjDate': '',
-    'fromHbToZj': 'C',
-    'fromWtToHzDate': '',
-    'fromWtToHz': 'B',
-    'meetDate': '',
-    'meetCase': 'C',
-    'travelDate': '',
-    'travelCase': 'D',
-    'medObsvReason': '',
-    'medObsv': 'B',
-    'belowCaseDesc': '',
-    'belowCase': 'D',
-    'temperature': '',
-    'notApplyReason': '',
-    'hzQRCode': 'A',
-    'specialDesc': ''}
+header = {
+    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
 
 with open('user.json', encoding='utf-8') as f:
     users = json.load(f)
 
 for user in users:
-    ui = uuid.uuid1()
-    data['uuid'] = str(ui)
-    data['currentResd'] = user['home']
-    header = {'User-Agent': user_agent}
-    res = requests.post('https://nco.zjgsu.edu.cn/login', data=user, headers=header)
-    cookieValue = ''
-    for item in res.cookies:
-        cookieValue += item.name + '=' + item.value + ';'
-    cookieValue += ' _ncov_uuid=' + str(ui) + '; _ncov_username=' + user['name'] + '; _ncov_psswd=' + user['psswd']
-
-    header = {'User-Agent': user_agent,
-              'Cookie': cookieValue}
-
-    res = requests.post('https://nco.zjgsu.edu.cn/', data=data, headers=header)
+    s = requests.session()
+    s.post('https://nco.zjgsu.edu.cn/login', data=user, headers=header)
+    res = s.get('https://nco.zjgsu.edu.cn/', headers=header)
+    data = {}
+    for item in re.findall(R'<input.+?>', str(res.content, encoding='utf-8')):
+        key = re.search(R'name="(.+?)"', item).group(1)
+        value = re.search(R'value="(.*?)"', item).group(1)
+        check = re.search(R'checked', item)
+        if key not in data.keys():
+            data[key] = value
+        elif check is not None:
+            data[key] = value
+    for item in re.findall(R'<textarea.+?>', str(res.content, encoding='utf-8')):
+        key = re.search(R'name="(.+?)"', item).group(1)
+        data[key] = ''
+    # 为了安全起见，这里还是推荐加上大致的地址和uuid值，虽然经过测试，不填写也可以正常使用
+    # ---------------安全线-------------#
+    data['uuid'] = str(uuid.uuid1())
+    data['locationInfo'] = '浙江省杭州市'
+    # ---------------安全线-------------#
+    res = s.post('https://nco.zjgsu.edu.cn/', data=data, headers=header)
     print(datetime.datetime.now().strftime('%Y-%m-%d'), '报送情况：',
           re.search('报送成功', str(res.content, encoding='utf-8')) is not None)
+    time.sleep(10)
