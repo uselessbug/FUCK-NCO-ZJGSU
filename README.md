@@ -1,21 +1,19 @@
 # FUCK NCO ZJGSU
 
-浙江工商大学 云战役 自动报送
+浙江工商大学 云战疫 自动报送
 
+## 使用方法
 
-## 1月13日更新说明
-学校新增了名为 `locationInfo` 的字段导致程序无法正常使用的问题现在已经修复。请执行 `rm -rf /root/FUCK-NCO-ZJGSU` 后重新执行[第一步](#第一步)
+*（点击即可展开或收起）*
 
-现在的程序会直接读取学校要求的参数个数和内容，并且根据上一次的填写信息自动填报和上一次基本上完全相同的信息，所以在 user 栏中不再需要家庭地址信息
+<details>
+    <summary>直接拉取源码部署</summary>
+<br>
 
-如果需要更改家庭地址，请在自动填报的代码执行前主动打卡更新，本程序的打卡不会覆盖主动打卡的信息
+优点是本地部署，便于管理，理论上不会被记录，稳定。缺点是需要一台服务器（？）
 
-## 需要
- 1. 一台 Linux 系统的服务器
- 2. git
- 3. python3
+以下所有操作均在配置有git和python3的Linux系统下进行
 
-## 部署使用
 ### 第一步
 请先在服务器上进行如下操作
 
@@ -47,6 +45,59 @@ crontab -e
 ```
 
 然后保存即可
+
+***
+
+</details>
+
+<details>
+    <summary>通过腾讯云函数（SCF）部署</summary>
+<br>
+
+优点是不需要服务器，且报送时IP在境内。缺点是一定程度存在被记录的风险，以及对SCF新手不友好。
+
+### 第一步
+
+下载 [SCF 版本的压缩包](https://github.com/uselessbug/FUCK-NCoV-ZJGSU/releases/download/v0.01_scf/v0.01_scf.zip)
+
+### 第二步
+
+直接访问腾讯云函数控制台创建云函数： [https://console.cloud.tencent.com/scf/list-create](https://console.cloud.tencent.com/scf/list-create) ，按照下图所示的说明进行创建。
+
+![scf01](https://i0.hdslb.com/bfs/album/a3759fa1bf6939fd3a6c524df90a51ef651334f0.png)
+![scf02](https://i0.hdslb.com/bfs/album/2d484412bf8054a042dbd60fb4cbc1d498584ab2.png)
+![scf03](https://i0.hdslb.com/bfs/album/782946ff930e170614f5e4c285815ab849370166.png)
+
+配置完成后，点击下方“完成”进行保存，并检查运行情况
+
+***
+
+</details>
+
+<details>
+    <summary>使用GitHub Action进行部署</summary>
+<br>
+
+
+优点是不需要服务器，部署步骤最快。缺点是使用美国IP，较大可能存在被记录的风险。
+
+### 第一步
+Fork本仓库，而后在Settings-Secrets中添加以下secret
+|变量名|含义|
+| --- | --- |
+|NAME |用户名（学号）|
+|PASSWORD|密码|
+
+### 第二步
+到Action页面，启用workflow。然后随意修改`README.md`并提交一次commit，检查workflow运行情况
+
+此项目默认会在每天十点左右上午执行，如需变更请修改`.github/workflows/main.yml`
+
+如果一个项目超过60天不活跃，其workflow会被禁用。如需永动请参考https://github.com/zhzhzhy/Workflow-Keep-Alive
+***
+
+</details>
+
 
 # 本代码使用 GPL 3.0 开源，请遵循 GPL 3.0 进行开发使用
 # 仅供学习交流使用，如有意外，自行承担责任
