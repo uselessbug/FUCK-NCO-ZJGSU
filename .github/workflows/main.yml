@@ -27,7 +27,7 @@ jobs:
           NAME: ${{ secrets.NAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          cd /home/runner/work/FUCK-NCoV-ZJGSU/FUCK-NCoV-ZJGSU
+          cd /home/runner/work/FUCK-NCO-ZJGSU/FUCK-NCO-ZJGSU
           python3 main-action.py >> out.txt
       - name: curl
         id: enable_workflow
@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: out
-          path: /home/runner/work/FUCK-NCoV-ZJGSU/FUCK-NCoV-ZJGSU
+          path: /home/runner/work/FUCK-NCO-ZJGSU/FUCK-NCO-ZJGSU
