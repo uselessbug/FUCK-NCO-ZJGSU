@@ -1,8 +1,8 @@
 # FUCK NCO ZJGSU
 
-浙江工商大学 云战疫 自动报送
+浙江工商大学 云战疫 & 我的商大 自动报送
 
-## 使用方法
+## 云战役—使用方法
 
 *（点击即可展开或收起）*
 
@@ -27,9 +27,12 @@ pip install -r requirements.txt
 chmod +x start.sh
 ```
 **请注意，脚本使用的是 python3，如果下载包时使用了 python2 则会出现意料之外的情况**
-**然后修改 userExample.json 文件，并将文件重命名为 user.json**
 
 ### 第二步
+
+**修改 userExample.json 文件，并将文件重命名为 user.json**
+
+### 第三步
 然后为服务器添加定时任务
 ```shell script
 crontab -e
@@ -98,6 +101,41 @@ Fork本仓库，而后在Settings-Secrets中添加以下secret
 
 </details>
 
+## 我的商大-使用方法
 
+### 第一步（若已经执行过 云战役 的第一步，则可以跳过）
+请先在服务器上进行如下操作
+
+将代码复制至目标文件夹下
+
+```shell script
+cd /root/
+git clone https://github.com/Hukeqing/FUCK-NCO-ZJGSU.git
+cd FUCK-NCO-ZJGSU
+pip install -r requirements.txt
+chmod +x start.sh
+```
+**请注意，脚本使用的是 python3，如果下载包时使用了 python2 则会出现意料之外的情况**
+
+### 第二步
+
+**修改 app-userExample.json 文件，并将文件重命名为 app-user.json**
+
+### 第三步
+然后为服务器添加定时任务
+```shell script
+crontab -e
+```
+
+添加下面的内容
+```shell script
+5 20 * * * /root/FUCK-NCO-ZJGSU/app-start.sh
+```
+此行代码的表示会在20点05分时自动打卡，如果你需要调整自动打卡时间，请自行修改，例如如下代码为在早上 8 点 32 分自动打卡
+```shell script
+5 20 * * * /root/FUCK-NCO-ZJGSU/app-start.sh
+```
+
+然后保存即可
 # 本代码使用 GPL 3.0 开源，请遵循 GPL 3.0 进行开发使用
 # 仅供学习交流使用，如有意外，自行承担责任
