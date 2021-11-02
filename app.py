@@ -12,10 +12,10 @@ header = {
 
 data = """
 {
-    "place": "123456",
+    "place": "浙江省,杭州市,钱塘区,学正街18号",
     "coordinate": "120.388529,30.308752"
 }
-"""
+""".encode('utf-8')
 
 with open('app-user.json', encoding='utf-8') as f:
     users = json.load(f)
