@@ -25,6 +25,7 @@ git clone https://github.com/Hukeqing/FUCK-NCO-ZJGSU.git
 cd FUCK-NCO-ZJGSU
 pip install -r requirements.txt
 chmod +x start.sh
+chmod +x app-start.sh
 ```
 **请注意，脚本使用的是 python3，如果下载包时使用了 python2 则会出现意料之外的情况**
 
@@ -114,6 +115,7 @@ git clone https://github.com/Hukeqing/FUCK-NCO-ZJGSU.git
 cd FUCK-NCO-ZJGSU
 pip install -r requirements.txt
 chmod +x start.sh
+chmod +x app-start.sh
 ```
 **请注意，脚本使用的是 python3，如果下载包时使用了 python2 则会出现意料之外的情况**
 
