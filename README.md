@@ -4,6 +4,8 @@
 
 ## 云战役—使用方法
 
+`yzy_new`文件夹内为新版云战役，`nco_archived"
+
 *（点击即可展开或收起）*
 
 <details>
@@ -62,7 +64,7 @@ crontab -e
 
 ### 第一步
 
-下载 [SCF 版本的压缩包](https://github.com/uselessbug/FUCK-NCoV-ZJGSU/releases/download/v0.01_scf/v0.01_scf.zip)
+下载 [SCF 版本的压缩包](https://github.com/uselessbug/FUCK-NCoV-ZJGSU/releases/download/v0.02_scf/v0.0.2_scf.zip)
 
 ### 第二步
 

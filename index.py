@@ -1,56 +1,48 @@
+# -*- coding: utf-8 -*-
 import os
 import json
-import uuid
-import re
-
 import requests
-import datetime
-import time
-
+from requests.structures import CaseInsensitiveDict
+from datetime import datetime
+import pytz
 
 def main(*args):
     header = {
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.17(0x17001126) NetType/WIFI Language/zh_CN'}
-
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Redmi K30 Pro Zoom Edition Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3211 MMWEBSDK/20220303 Mobile Safari/537.36 MMWEBID/9693 MicroMessenger/8.0.21.2120(0x28001557) Process/toolsmp WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64',
+        'Content-Type': 'application/json',
+    }
+    
     ID = os.environ["NAME"]
     PWD = os.environ["PASSWORD"]
-    f = [
-                {
-                    'name': str(ID),
-                    'psswd': str(PWD)
-                }
-            ]
-    users = f
+    
+    users = [
+        {
+            'gh': str(ID),
+            'psswd': str(PWD)
+        }
+    ]
 
     for user in users:
         s = requests.session()
-        s.post('https://nco.zjgsu.edu.cn/login', data=user, headers=header)
-        res = s.get('https://nco.zjgsu.edu.cn/', headers=header)
-        content = str(res.content, encoding='utf-8')
-        if re.search('当天已报送!', content):
-            print(datetime.datetime.now().strftime('%Y-%m-%d'), '报送情况： *主动报送*')
-            continue
-        data = {}
-        for item in re.findall(R'<input.+?>', content):
-            key = re.search(R'name="(.+?)"', item).group(1)
-            value = re.search(R'value="(.*?)"', item).group(1)
-            check = re.search(R'checked', item)
-            if key not in data.keys():
-                data[key] = value
-            elif check is not None:
-                data[key] = value
-        for item in re.findall(R'<textarea.+?>', content):
-            key = re.search(R'name="(.+?)"', item).group(1)
-            data[key] = ''
-        # 为了安全起见，这里还是推荐加上大致的地址和uuid值，虽然经过测试，不填写也可以正常使用
-        # ---------------安全线-------------#
-        data['uuid'] = str(uuid.uuid1())
-        data['locationInfo'] = '浙江省杭州市'
-        # ---------------安全线-------------#
-        res = s.post('https://nco.zjgsu.edu.cn/', data=data, headers=header)
-        print(datetime.datetime.now().strftime('%Y-%m-%d'), '报送情况：', '报送成功' if
-            re.search('报送成功', str(res.content, encoding='utf-8')) is not None else '报送失败！！！！！')
-        time.sleep(10)
+        response = s.post('https://yzy.zjgsu.edu.cn/cloudbattleservice/service/login', data=json.dumps(user), headers=header)
+        token = json.loads(response.text)['data']['token']
+        headers = CaseInsensitiveDict()
+        headers["token"] = token
+        response = s.get('https://yzy.zjgsu.edu.cn/cloudbattleservice/service/getDailyReport', headers=headers)
+        reportDate = json.loads(response.text)['data']['item']['reportDate']
+        reportDate = datetime.strptime(reportDate, '%Y-%m-%d %H:%M:%S').strftime("%Y-%m-%d")
+        nowDate = datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d")
+        if (reportDate == nowDate):
+            print((nowDate), '报送情况： *主动报送*')
+        else:
+            headers["Content-Type"] = "application/json"
+            data = """{"currentResd":"浙江省杭州市钱塘区钱塘区下沙浙江工商大学金沙港生活园区","fromHbToZj":"C","fromWtToHz":"B","meetCase":"C",
+            "travelCase":"D","medObsv":"B","belowCase":"D","hzQrCode":"A","specialDesc":"无","deviceId":"","fromDevice":"WeChat",
+            "isNewEpid":"否","location":"浙江省杭州市钱塘区钱塘区下沙浙江工商大学金沙港生活园区","coordinate":"120.379852,30.312492"}""".encode('utf-8')
+            response = s.post('https://yzy.zjgsu.edu.cn/cloudbattleservice/service/add', data=data, headers=headers)
+            print((nowDate), '报送情况：' + (
+                '成功打卡' if response.json()['code'] == 20000 else '打卡失败！！！！！！'
+            ))
 
 if __name__ == '__main__':
     main()
