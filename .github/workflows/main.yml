@@ -19,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@master
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install Requirements
         run: pip install -r requirements.txt
       - name: Working
@@ -28,7 +28,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           cd /home/runner/work/FUCK-NCO-ZJGSU/FUCK-NCO-ZJGSU
-          python3 main-action.py >> out.txt
+          python3 index.py >> out.txt
       - name: curl
         id: enable_workflow
         env:
