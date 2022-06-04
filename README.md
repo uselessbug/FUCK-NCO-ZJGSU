@@ -62,7 +62,7 @@ crontab -e
 
 ### 第一步
 
-下载 [SCF 版本的压缩包](https://github.com/uselessbug/FUCK-NCoV-ZJGSU/releases/download/v0.0.2_scf/v0.0.2_scf.zip)
+下载 [SCF 版本的压缩包](https://github.com/uselessbug/FUCK-NCoV-ZJGSU/releases/download/v0.0.3_scf/v0.0.3_scf.zip)
 
 ### 第二步
 
